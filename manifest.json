@@ -1,0 +1,18 @@
+{
+  "name": "Fiverr AI Text Generator",
+  "version": "1.0",
+  "description": "Generates AI text for Fiverr gig descriptions",
+  "manifest_version": 2,
+  "permissions": ["activeTab", "storage"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.fiverr.com/gigs/*/edit"],
+      "js": ["content.js"]
+    }
+  ],
+  "browser_action": {}
+}

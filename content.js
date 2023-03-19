@@ -1,34 +1,24 @@
-console.log("hello");
-// function to fetch the response from the API
-async function fetchToneResponse(tone) {
-  const response = await fetch(`https://example-api.com/tone?tone=${tone}`);
-  const data = await response.json();
-  return data;
-}
+console.log("Content script loaded");
 
-// function to update the gig description
-function updateGigDescription(description) {
-  const gigDescriptionInput = document.querySelector("#description");
-  gigDescriptionInput.value = description;
-}
+// Listen to changes in the storage and get the current status of the extension
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+  console.log(changes.enabled);
+  if (changes.enabled && changes.enabled.newValue !== undefined) {
+    const isEnabled = changes.enabled.newValue;
+    if (isEnabled) {
+      console.log("fetch here");
+    } else {
+      console.log("remove everything");
+    }
+    // Send a message to the background script with the updated status
+    chrome.runtime.sendMessage({ action: "updateStatus", enabled: isEnabled });
+  }
+});
 
-// function to add the tone button
-function addToneButton(tone) {
-  const gigDescriptionDiv = document.querySelector(".description-wrapper");
-  const toneButton = document.createElement("button");
-  toneButton.innerText = tone;
-  toneButton.onclick = async () => {
-    const toneResponse = await fetchToneResponse(tone);
-    updateGigDescription(toneResponse.description);
-  };
-  gigDescriptionDiv.appendChild(toneButton);
-}
-
-// main function to add all tone buttons
-function addToneButtons() {
-  const tones = ["formal", "casual", "friendly", "informative"];
-  tones.forEach((tone) => addToneButton(tone));
-}
-
-// call the main function to add tone buttons
-addToneButtons();
+// Get the initial status of the extension
+chrome.storage.sync.get("enabled", function (data) {
+  console.log(data);
+  const isEnabled = data.enabled;
+  // Send a message to the background script with the initial status
+  chrome.runtime.sendMessage({ action: "updateStatus", enabled: isEnabled });
+});

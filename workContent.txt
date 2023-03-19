@@ -1,0 +1,7 @@
+console.log("Content script loaded");
+
+chrome.runtime.sendMessage({ action: "getStatus" }, function (response) {
+  console.log(response);
+  const isEnabled = response.enabled;
+  console.log("Extension is " + (isEnabled ? "enabled" : "disabled"));
+});

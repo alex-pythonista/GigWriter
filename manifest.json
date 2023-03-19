@@ -1,8 +1,8 @@
 {
-  "name": "Fiverr AI Text Generator",
-  "version": "1.0",
-  "description": "Generates AI text for Fiverr gig descriptions",
   "manifest_version": 2,
+  "name": "My Extension",
+  "version": "1.0.0",
+  "description": "My extension description.",
   "permissions": ["activeTab", "storage"],
   "background": {
     "scripts": ["background.js"],
@@ -10,9 +10,14 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.fiverr.com/gigs/*/edit"],
+      "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
   ],
-  "browser_action": {}
+  "browser_action": {
+    "default_icon": {
+      "16": "icon.png",
+      "32": "icon.png"
+    }
+  }
 }
